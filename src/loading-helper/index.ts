@@ -1,4 +1,4 @@
-import type { AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse, AxiosStatic } from 'axios'
+import type { Factory } from '../types'
 
 export interface LoadingOptions {
   /**
@@ -8,8 +8,8 @@ export interface LoadingOptions {
   fieldName?: string
 }
 
-export type LoadingShowCallback = (config: AxiosRequestConfig) => void
-export type LoadingHideCallback = (config: AxiosRequestConfig, response?: AxiosResponse, error?: AxiosError) => void
+export type RenderCallback<T extends Factory.Instance> = (config: Factory.ExtractConfig<T>) => void
+export type VanishCallback<T extends Factory.Instance> = (config: Factory.ExtractConfig<T>, response?: Factory.ExtractResponse<T>, error?: any) => void
 
 /**
  * Global loading indicator for axios requests
@@ -20,18 +20,18 @@ export type LoadingHideCallback = (config: AxiosRequestConfig, response?: AxiosR
  * request starts and the last request completes.
  *
  * @param axios - The Axios instance or static object to apply the interceptor to
- * @param show - Callback function to show the loading indicator
- * @param hide - Callback function to hide the loading indicator
+ * @param render - Callback function to render the loading indicator
+ * @param vanish - Callback function to vanish the loading indicator
  * @param options - Configuration options for the loading helper
  */
-export function withLoadingHelper(axios: AxiosStatic | AxiosInstance, show: LoadingShowCallback, hide: LoadingHideCallback, options: LoadingOptions = {}): void {
+export function withLoadingHelper<T extends Factory.Instance>(axios: T, render: RenderCallback<T>, vanish: VanishCallback<T>, options: LoadingOptions = {}): void {
   let subscribers = 0
   const fieldName = options.fieldName || 'loading'
   const isLoading = (config: any): boolean => !!config?.[fieldName]
 
   axios.interceptors.request.use((config) => {
     if (isLoading(config)) {
-      !subscribers && show(config)
+      !subscribers && render(config)
       subscribers++
     }
     return config
@@ -41,14 +41,14 @@ export function withLoadingHelper(axios: AxiosStatic | AxiosInstance, show: Load
     (response) => {
       if (isLoading(response.config)) {
         subscribers--
-        !subscribers && hide(response.config, response)
+        !subscribers && vanish(response.config, response)
       }
       return response
     },
     (error) => {
       if (isLoading(error.config)) {
         subscribers--
-        !subscribers && hide(error.config, undefined, error)
+        !subscribers && vanish(error.config, undefined, error)
       }
       return Promise.reject(error)
     },

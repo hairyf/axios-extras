@@ -7,6 +7,21 @@
  * @param value - The value to check
  * @returns True if the value is a FormData instance, false otherwise
  */
-// eslint-disable-next-line ts/ban-ts-comment
-// @ts-expect-error
-export const isFormData = (value: any): value is FormData => typeof value === 'object' && typeof window !== 'undefined' && value instanceof FormData
+
+import type { Factory } from '../types'
+import { isFormData } from '@hairy/utils'
+
+export function assign(config: Factory.RequestConfig, path: string, params: object | (() => object)): Factory.RequestConfig | undefined {
+  // Skip if the target is FormData (can't merge objects into FormData)
+  if (isFormData(config[path]))
+    return
+
+  // Only proceed if the target is undefined or an object
+  if (typeof config[path] === 'undefined' || typeof config[path] === 'object') {
+    // Get parameters (evaluate function if params is a function)
+    const option = typeof params === 'function' ? params() : params
+
+    // Merge parameters with existing config, prioritizing existing values
+    config[path] = { ...option, ...config[path] }
+  }
+}

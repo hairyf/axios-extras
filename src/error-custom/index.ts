@@ -1,5 +1,6 @@
-import type { AxiosInstance, AxiosResponse, AxiosStatic } from 'axios'
-import { AxiosError } from 'axios'
+import { Factory } from '../types'
+
+export type Validate<T extends Factory.Instance> = (response: Factory.ExtractResponse<T>) => boolean | Factory.Error | void
 
 /**
  * Custom response error interceptor that allows handling API-specific error formats
@@ -14,17 +15,23 @@ import { AxiosError } from 'axios'
  *                   Return an AxiosError instance to throw that specific error
  *                   Return any other value (including undefined) to treat the response as successful
  */
-export function withErrorCustom(axios: AxiosStatic | AxiosInstance, validate: (response: AxiosResponse) => boolean | AxiosError | void): void {
-  const onFulfilled = (response: AxiosResponse): AxiosResponse<any, any> => {
+export function withErrorCustom<T extends Factory.Instance>(axios: T, validate: Validate<T>): void {
+  const onFulfilled = (response: Factory.Response): Factory.Response => {
     const result = validate(response)
     const { config, request, status, data } = response
 
     if (result === false) {
       const errorText = JSON.stringify(data, null, '\t')
-      throw new AxiosError(`Custom Error: \n ${errorText}`, `${status}`, config, request, response)
+      throw new Factory.Error(
+        `Custom Error: \n ${errorText}`,
+        `${status}`,
+        config,
+        request,
+        response,
+      )
     }
 
-    if (result instanceof AxiosError)
+    if (result instanceof Error)
       throw result
 
     return response

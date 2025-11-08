@@ -1,4 +1,4 @@
-import type { AxiosError, AxiosInstance, AxiosStatic } from 'axios'
+import type { Factory } from '../types'
 
 /**
  * Global error handling interceptor for axios requests
@@ -13,8 +13,8 @@ import type { AxiosError, AxiosInstance, AxiosStatic } from 'axios'
  * @param axios - The Axios instance or static object to apply the interceptor to
  * @param rejected - Function that handles errors and optionally returns a value to resolve the promise
  */
-export function withErrorHelper(axios: AxiosStatic | AxiosInstance, rejected: (error: AxiosError) => any): void {
-  axios.interceptors.response.use(undefined, (error: AxiosError) => {
+export function withErrorHelper<T extends Factory.Instance>(axios: T, rejected: (error: any) => any): void {
+  axios.interceptors.response.use(undefined, (error: Factory.Error) => {
     // Only handle errors if not explicitly disabled in the request config
     if (error.config?.handleError !== false) {
       const result = rejected(error)

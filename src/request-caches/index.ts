@@ -1,4 +1,4 @@
-import type { AxiosInstance, AxiosStatic } from 'axios'
+import type { Factory } from '../types'
 import { asyncCacheFn, stableStringify } from 'async-cache-fn'
 import { withRequestPacker } from '../request-packer'
 
@@ -28,7 +28,7 @@ export type RequestCacheConfig = boolean | { local?: boolean | CacheLocalOptions
  * @param axios - The Axios instance or static object to apply the interceptor to
  * @param options - Configuration options for request caching behavior
  */
-export function withRequestCaches(axios: AxiosStatic | AxiosInstance, options: RequestCacheOptions = {}): void {
+export function withRequestCaches(axios: Factory.Instance, options: RequestCacheOptions = {}): void {
   // Map to store cached request functions
   const cacheFuncs = new Map()
 

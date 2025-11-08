@@ -1,5 +1,6 @@
-import type { AxiosInstance, AxiosStatic, InternalAxiosRequestConfig } from 'axios'
-import { isFormData } from './utils'
+import type { Fn } from '@hairy/utils'
+import type { Factory } from '../types'
+import { assign } from './utils'
 
 export type ExtraField = 'params' | 'data' | 'headers' | 'auth'
 /**
@@ -14,29 +15,10 @@ export type ExtraField = 'params' | 'data' | 'headers' | 'auth'
  * @param field - The request field to add parameters to ('params', 'data', 'headers', or 'auth')
  * @param params - Object containing extra parameters or a function that returns such an object
  */
-export function withParamsExtra(
-  axios: AxiosStatic | AxiosInstance,
-  field: ExtraField,
-  params: object | (() => object),
-): void {
+export function withParamsExtra(axios: Factory.Instance, field: ExtraField, params: object | Fn<object>): void {
   axios.interceptors.request.use((config) => {
-    const assign = (path: keyof typeof config): InternalAxiosRequestConfig<any> | undefined => {
-      // Skip if the target is FormData (can't merge objects into FormData)
-      if (isFormData(config[path]))
-        return
-
-      // Only proceed if the target is undefined or an object
-      if (typeof config[path] === 'undefined' || typeof config[path] === 'object') {
-        // Get parameters (evaluate function if params is a function)
-        const option = typeof params === 'function' ? params() : params
-
-        // Merge parameters with existing config, prioritizing existing values
-        config[path] = { ...option, ...config[path] }
-      }
-    }
-
     // Apply the assignment to the specified field
-    assign(field)
+    assign(config, field, params)
     return config
   })
 }

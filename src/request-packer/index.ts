@@ -1,15 +1,15 @@
-import type { AxiosInstance, AxiosRequestConfig, AxiosStatic } from 'axios'
+import type { Factory } from '../types'
 
 /**
  * Function that intercepts and potentially modifies axios requests
  */
-interface RequestPackerCaller {
+interface RequestPackerCaller<T extends Factory.Instance> {
   /**
    * @param config - The request configuration
    * @param request - The original axios request function
    * @returns The result of the request or a modified request
    */
-  (config: AxiosRequestConfig, request: AxiosInstance['request']): any
+  (config: Factory.ExtractConfig<T>, request: T['request']): any
 }
 
 /**
@@ -22,7 +22,7 @@ interface RequestPackerCaller {
  * @param axios - The Axios instance or static object to modify
  * @param caller - Function that will be called for each request
  */
-export function withRequestPacker(axios: AxiosStatic | AxiosInstance, caller: RequestPackerCaller): void {
+export function withRequestPacker<T extends Factory.Instance>(axios: T, caller: RequestPackerCaller<T>): void {
   // Store the original request method
   const request = axios.request.bind(axios)
 

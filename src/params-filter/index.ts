@@ -1,4 +1,4 @@
-import type { AxiosInstance, AxiosStatic } from 'axios'
+import type { Factory } from '../types'
 import { formToObject, isFormData, isPlainObject, objectToForm } from '@hairy/utils'
 import { pickByParams } from './utils'
 
@@ -30,7 +30,7 @@ export interface FilterParamsOptions {
  * @param option - Configuration options for filtering behavior
  */
 export function withParamsFilter(
-  axios: AxiosStatic | AxiosInstance,
+  axios: Factory.Instance,
   field: ('*' | FilterField | FilterField[]),
   filters: any[],
   option: FilterParamsOptions = {},
