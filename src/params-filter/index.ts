@@ -1,5 +1,5 @@
 import type { Factory } from '../types'
-import { formToObject, isFormData, isPlainObject, objectToForm } from '@hairy/utils'
+import { formdataToObject, isFormData, isPlainObject, objectToFormdata } from '@hairy/utils'
 import { pickByParams } from './utils'
 
 export type FilterField = 'params' | 'data' | 'headers' | 'formData'
@@ -58,9 +58,9 @@ export function withParamsFilter(
 
     // Filter FormData if enabled and data is FormData
     if (fields.includes('formData') && isFormData(config.data)) {
-      const transformObject = formToObject(config.data)
+      const transformObject = formdataToObject(config.data)
       const pickByObject = pickByParams(transformObject, filters)
-      config.data = objectToForm(pickByObject as Record<string, string>)
+      config.data = objectToFormdata(pickByObject as Record<string, string>)
     }
 
     return config

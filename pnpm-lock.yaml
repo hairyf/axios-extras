@@ -38,8 +38,8 @@ catalogs:
       version: 6.2.2
   default:
     '@hairy/utils':
-      specifier: ^1.34.0
-      version: 1.34.0
+      specifier: ^1.41.0
+      version: 1.41.0
     '@vitest/coverage-v8':
       specifier: ^3.0.9
       version: 3.0.9
@@ -70,7 +70,7 @@ importers:
     dependencies:
       '@hairy/utils':
         specifier: 'catalog:'
-        version: 1.34.0
+        version: 1.41.0
       async-cache-fn:
         specifier: 'catalog:'
         version: 0.0.3
@@ -583,8 +583,8 @@ packages:
     resolution: {integrity: sha512-JubJ5B2pJ4k4yGxaNLdbjrnk9d/iDz6/q8wOilpIowd6PJPgaxCuHBnBszq7Ce2TyMrywm5r4PnKm6V3iiZF+g==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
 
-  '@hairy/utils@1.34.0':
-    resolution: {integrity: sha512-C+PtjceBIRKOQI086A3yFfPc1jIpyGE9kS2vXCq+CMOavGjMF8CGzdfte6zRsiPL0k+WdaxnGB7OdKjvMxeALw==}
+  '@hairy/utils@1.41.0':
+    resolution: {integrity: sha512-uut5VcQhmfCIN9H1kLex55PDjIVOW9OVBmNUAsieRMsMk1YZyE7njBzFgA0oO9esI1X0MHfencInXj92q64hDg==}
 
   '@humanfs/core@0.19.1':
     resolution: {integrity: sha512-5DyQ4+1JEUzejeK1JGICcideyfUbGixgS9jNgex5nqkW+cY7WZhxBigmieN5Qnw9ZosSNVC9KQKyb+GUaGyKUA==}
@@ -3286,7 +3286,7 @@ snapshots:
       '@eslint/core': 0.12.0
       levn: 0.4.1
 
-  '@hairy/utils@1.34.0':
+  '@hairy/utils@1.41.0':
     dependencies:
       '@types/lodash-es': 4.17.12
       bignumber.js: 9.1.2
