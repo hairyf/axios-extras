@@ -1,7 +1,7 @@
 {
   "name": "axios-extras",
   "type": "module",
-  "version": "3.0.0",
+  "version": "3.1.0",
   "packageManager": "pnpm@10.6.5",
   "description": "Has axios extra (axios interceptors) used by most business scenarios",
   "author": "Hairyf <wwu710632@gmail.com>",
