@@ -1,6 +1,6 @@
 import { Factory } from '../types'
 
-export type Validate<T extends Factory.Instance> = (response: Factory.ExtractResponse<T>) => boolean | Factory.Error | void
+export type Validate<T extends Factory.Instance> = (response: Factory.ExtractResponse<T>) => boolean | Factory.Error | globalThis.Error | void
 
 /**
  * Custom response error interceptor that allows handling API-specific error formats

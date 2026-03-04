@@ -1,7 +1,8 @@
-import axios from 'axios'
+import _axios from 'axios'
 import { withLoadingHelper } from '.'
 
 const noop: (...args: any[]) => void = () => {}
+const axios = _axios as any
 axios.defaults.baseURL = 'https://jsonplaceholder.typicode.com'
 
 describe('withLoadingHelper', () => {
@@ -39,5 +40,27 @@ describe('withLoadingHelper', () => {
 
     expect(showCount).toBe(1)
     expect(hideCount).toBe(1)
+  })
+
+  it('calls vanish on request error when loading is true', async () => {
+    const http = axios.create()
+    let vanishCalls = 0
+    let lastError: any
+    withLoadingHelper(
+      http,
+      () => {},
+      (_config, _response, error) => {
+        vanishCalls++
+        lastError = error
+      },
+    )
+    try {
+      await http.get('/nonexistent-404-path-xyz', { loading: true })
+    }
+    catch {
+      // expected
+    }
+    expect(vanishCalls).toBe(1)
+    expect(lastError).toBeDefined()
   })
 })
