@@ -40,4 +40,26 @@ describe('withLoadingHelper', () => {
     expect(showCount).toBe(1)
     expect(hideCount).toBe(1)
   })
+
+  it('calls vanish on request error when loading is true', async () => {
+    const http = axios.create()
+    let vanishCalls = 0
+    let lastError: any
+    withLoadingHelper(
+      http,
+      () => {},
+      (_config, _response, error) => {
+        vanishCalls++
+        lastError = error
+      },
+    )
+    try {
+      await http.get('/nonexistent-404-path-xyz', { loading: true })
+    }
+    catch {
+      // expected
+    }
+    expect(vanishCalls).toBe(1)
+    expect(lastError).toBeDefined()
+  })
 })

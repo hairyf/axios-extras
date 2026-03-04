@@ -32,6 +32,20 @@ describe('withAssignResponse', () => {
     expect(response.id).toBeTypeOf('undefined')
     expect(response.sid).toBeTypeOf('number')
   })
+
+  it('assigns on error.response when request fails', async () => {
+    const http = axios.create()
+    withAssignResponse(http, ['message'])
+    let err: any
+    try {
+      await http.get('/posts/99999')
+    }
+    catch (e) {
+      err = e
+    }
+    expect(err).toBeDefined()
+    expect(err?.response).toBeDefined()
+  })
 })
 
 declare module 'axios' {
