@@ -16,28 +16,29 @@
   "keywords": [],
   "sideEffects": false,
   "exports": {
-    ".": {
-      "import": "./dist/index.mjs",
-      "require": "./dist/index.cjs"
-    }
+    ".": "./dist/index.mjs",
+    "./package.json": "./package.json"
   },
-  "main": "./dist/index.cjs",
+  "main": "./dist/index.mjs",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.mts",
   "files": [
     "dist"
   ],
   "scripts": {
-    "build": "unbuild",
-    "dev": "unbuild --stub",
+    "build": "tsdown",
+    "dev": "tsdown --watch",
     "lint": "eslint",
     "prepublishOnly": "nr build",
-    "release": "bumpp && pnpm publish",
+    "release": "bumpp",
     "start": "tsx src/index.ts",
     "test": "vitest",
     "test:coverage": "vitest --coverage",
     "typecheck": "tsc --noEmit",
     "prepare": "simple-git-hooks"
+  },
+  "peerDependencies": {
+    "axios": ">=1.0.0"
   },
   "dependencies": {
     "@hairy/utils": "catalog:",
@@ -51,11 +52,12 @@
     "bumpp": "catalog:cli",
     "eslint": "catalog:cli",
     "lint-staged": "catalog:cli",
+    "publint": "catalog:cli",
     "simple-git-hooks": "catalog:cli",
     "tinyexec": "catalog:utils",
+    "tsdown": "catalog:cli",
     "tsx": "catalog:cli",
     "typescript": "catalog:cli",
-    "unbuild": "catalog:cli",
     "vite": "catalog:cli",
     "vitest": "catalog:testing",
     "vitest-package-exports": "catalog:testing",
