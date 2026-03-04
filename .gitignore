@@ -9,3 +9,7 @@ lib-cov
 logs
 node_modules
 temp
+
+skills/
+agents/
+skills-lock.json
