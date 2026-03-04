@@ -1,6 +1,8 @@
-import axios, { AxiosError } from 'axios'
+import _axios from 'axios'
 import { withErrorCustom } from '.'
+import { AxiosError } from '../error'
 
+const axios = _axios as any
 axios.defaults.baseURL = 'https://jsonplaceholder.typicode.com'
 
 describe('withErrorCustom', () => {

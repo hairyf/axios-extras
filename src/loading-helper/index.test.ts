@@ -1,7 +1,8 @@
-import axios from 'axios'
+import _axios from 'axios'
 import { withLoadingHelper } from '.'
 
 const noop: (...args: any[]) => void = () => {}
+const axios = _axios as any
 axios.defaults.baseURL = 'https://jsonplaceholder.typicode.com'
 
 describe('withLoadingHelper', () => {

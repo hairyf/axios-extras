@@ -3,7 +3,7 @@ import { withRequestCaches } from '.'
 
 describe('withRequestCaches', () => {
   it('when cache disabled, passes through to request', async () => {
-    const request = vi.fn(() => Promise.resolve({ data: 1 }))
+    const request = vi.fn((_config?: any) => Promise.resolve({ data: 1 }))
     const axios = { request }
     withRequestCaches(axios as any, {})
     const result = await axios.request({ url: '/a' } as any)
@@ -12,7 +12,7 @@ describe('withRequestCaches', () => {
   })
 
   it('when options.default true, caches by config (in-memory)', async () => {
-    const request = vi.fn(() => Promise.resolve({ data: 42 }))
+    const request = vi.fn((_config?: any) => Promise.resolve({ data: 42 }))
     const axios = { request }
     withRequestCaches(axios as any, { default: true })
     const config = { url: '/same' }
@@ -24,7 +24,7 @@ describe('withRequestCaches', () => {
   })
 
   it('when config.cache is true, enables caching for that request', async () => {
-    const request = vi.fn(() => Promise.resolve({ data: 99 }))
+    const request = vi.fn((_config?: any) => Promise.resolve({ data: 99 }))
     const axios = { request }
     withRequestCaches(axios as any, {})
     const config = { url: '/x', cache: true }
@@ -43,7 +43,7 @@ describe('withRequestCaches', () => {
       length: 0,
       key: vi.fn(),
     }
-    const request = vi.fn(() => Promise.resolve({ data: 'from-network' }))
+    const request = vi.fn((_config?: any) => Promise.resolve({ data: 'from-network' }))
     const axios = { request }
     withRequestCaches(axios as any, { default: true, local: { enable: true, storage } })
     const config = { url: '/local' }
@@ -66,7 +66,7 @@ describe('withRequestCaches', () => {
       length: 0,
       key: vi.fn(),
     }
-    const request = vi.fn(() => Promise.resolve({ data: 1 }))
+    const request = vi.fn((_config?: any) => Promise.resolve({ data: 1 }))
     const axios = { request }
     withRequestCaches(axios as any, { default: true })
     await axios.request({ url: '/y', cache: { local: { enable: true, storage } } } as any)

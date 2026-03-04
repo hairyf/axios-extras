@@ -3,7 +3,7 @@ import { withRequestPacker } from '.'
 
 describe('withRequestPacker', () => {
   it('calls caller with (config, request) for request(config)', async () => {
-    const request = vi.fn(() => Promise.resolve({ data: 1 }))
+    const request = vi.fn((_config?: any) => Promise.resolve({ data: 1 }))
     const axios = { request }
     const caller = vi.fn((config: any, req: any) => {
       expect(config).toEqual({ url: '/a' })
@@ -17,7 +17,7 @@ describe('withRequestPacker', () => {
   })
 
   it('normalizes request(url, config) to config with url', async () => {
-    const request = vi.fn(() => Promise.resolve({ data: 2 }))
+    const request = vi.fn((_config?: any, _config2?: any) => Promise.resolve({ data: 2 }))
     const axios = { request }
     const caller = vi.fn((config: any, req: any) => req(config))
     withRequestPacker(axios as any, caller)
@@ -29,7 +29,7 @@ describe('withRequestPacker', () => {
   })
 
   it('returns caller result when caller returns value', async () => {
-    const request = vi.fn(() => Promise.resolve({ data: 3 }))
+    const request = vi.fn((_config?: any) => Promise.resolve({ data: 3 }))
     const axios = { request }
     const customResult = { data: 'custom' }
     const caller = vi.fn(() => Promise.resolve(customResult))
